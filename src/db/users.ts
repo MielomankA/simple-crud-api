@@ -17,3 +17,12 @@ export const getAllUsers = async (): Promise<User[]> => {
     setTimeout(() => resolve(users), 50);
   });
 };
+
+export const getUserById = async (id: string): Promise<User | null> => {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      const user = users.find((user) => user.id === id) ?? null;
+      resolve(user);
+    }, 20)
+  );
+};
