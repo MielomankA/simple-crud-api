@@ -7,9 +7,9 @@ postRouter.post('/', async (request, response) => {
   try {
   const { username, age, hobbies } = request.body;
 
-  if (!username || !age || !hobbies) {
+  if (!username || typeof age !== 'number' || !Array.isArray(hobbies)) {
     return response.status(400).json({
-      error: "Missing required fields: username, age or hobbies"
+      error: "Missing or invalid required fields: username: string, age: number, hobbies: string[]"
     });
   }
 
