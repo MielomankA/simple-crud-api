@@ -48,3 +48,17 @@ export const updateUser = async ({ id, username, age, hobbies }: User): Promise<
     }, 20);
   });
 };
+
+export const deleteUser = async (id: string): Promise<User | null> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const index = users.findIndex((user) => user.id === id);
+      if (index === -1) {
+        resolve(null);
+      } else {
+        users.splice(index, 1);
+        resolve(users[index]);
+      }
+    }, 20);
+  });
+};
