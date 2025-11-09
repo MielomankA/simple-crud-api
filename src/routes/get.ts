@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { getAllUsers, getUserById } from '../db/users.js';
 import { validate as uuidValidate } from 'uuid';
-export const router = Router();
 
-router.get('/', async (request, response) => {
+export const getRouter = Router();
+
+getRouter.get('/', async (request, response) => {
   try {
     const users = await getAllUsers();
     response.status(200).json(users);
@@ -12,7 +13,7 @@ router.get('/', async (request, response) => {
   }
 });
 
-router.get('/:userId', async (request, response) => {
+getRouter.get('/:userId', async (request, response) => {
     try {
         const { userId } = request.params;
 

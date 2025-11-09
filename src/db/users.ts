@@ -1,11 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-
-export interface User {
-  id: string;
-  username: string;
-  age: number;
-  hobbies: string[];
-}
+import { User } from '../types/types.js';
 
 const users: User[] = [
   { id: uuidv4(), username: 'Ivan Pavlov', age: 30, hobbies: ['reading', 'gaming', 'soccer'] },
@@ -25,4 +19,18 @@ export const getUserById = async (id: string): Promise<User | null> => {
       resolve(user);
     }, 20)
   );
+};
+
+export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newUser = {
+        ...user,
+        id: uuidv4(),
+      }
+
+      users.push(newUser);
+      resolve(newUser);
+    }, 20);
+  });
 };
