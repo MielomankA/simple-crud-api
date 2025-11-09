@@ -34,3 +34,17 @@ export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
     }, 20);
   });
 };
+
+export const updateUser = async ({ id, username, age, hobbies }: User): Promise<User | null> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const index = users.findIndex((user) => user.id === id);
+      if (index === -1) {
+        resolve(null);
+      } else {
+        users[index] = { id, username, age, hobbies };
+        resolve(users[index]);
+      }
+    }, 20);
+  });
+};
