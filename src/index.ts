@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api/users', usersRouter);
+app.use((request, response) => {
+  response.status(404).json({ message: `Endpoint ${request.originalUrl} not found` });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
