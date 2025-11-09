@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../types/types.js';
 
-const users: User[] = [
-  { id: uuidv4(), username: 'Ivan Pavlov', age: 30, hobbies: ['reading', 'gaming', 'soccer'] },
-  { id: uuidv4(), username: 'Maria Polo', age: 25, hobbies: ['painting', 'cooking'] }
-];
+const users: User[] = [];
 
 export const getAllUsers = async (): Promise<User[]> => {
   return new Promise((resolve) => {
