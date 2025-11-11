@@ -1,27 +1,25 @@
-import { Router } from "express";
+import http from "node:http";
 import { getUserById, deleteUser } from "../db/users.js";
 import { validate as uuidValidate } from 'uuid';
+import { passJson } from "../utils/passJson.js";
 
-export const deleteRouter = Router();
+export const deleteReq = async (response: http.ServerResponse, url: string) => {
+    try {
+      const id = url.split('/').pop();
 
-deleteRouter.delete('/:userId', async (request, response) => {
-  try {
-    const { userId } = request.params;
+      if (!id || !uuidValidate(id)) {
+        return passJson(response, 400, { message: 'Invalid userId' });
+      }
 
-    if (!uuidValidate(userId)) { 
-      return response.status(400).json({ message: 'userId is invalid (not uuid)' });
+      const user = await getUserById(id);
+
+      if (!user) {
+        return passJson(response, 404, { message: 'User doesn\'t exist' });
+      }
+
+      await deleteUser(user.id);
+      return passJson(response, 204, {});
+    } catch {
+      return passJson(response, 500, { message: 'Server Error' });
     }
-
-    const user = await getUserById(userId);
-
-    if (!user) {
-      return response.status(404).json({ message: 'User doesn\'t exist' });
-    }
-    
-    await deleteUser(userId);
-
-    return response.status(204).send();
-  } catch (error) {
-    return response.status(500).json({ message: 'Server Error' });
-  }
-});
+};
