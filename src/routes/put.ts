@@ -1,35 +1,38 @@
-import { Router } from "express";
 import { getUserById, updateUser } from "../db/users.js";
 import { validate as uuidValidate } from 'uuid';
+import http from "node:http";
+import { passJson } from "../utils/passJson.js";
 
-export const putRouter = Router();
+export const putReq = (request: http.IncomingMessage, response: http.ServerResponse, url: string) => {
+  const id = url.split('/').pop();
 
-putRouter.put('/:userId', async (request, response) => {
-  try {
-      const { userId } = request.params;
-      const { username, age, hobbies } = request.body;
-
-    if (!uuidValidate(userId)) { 
-      return response.status(400).json({ message: 'userId is invalid (not uuid)' });
-    }
-
-    if (!username || typeof age !== 'number' || !Array.isArray(hobbies)) {
-      return response.status(400).json({
-        error: "Missing or invalid required fields: username: string, age: number, hobbies: string[]"
-      });
-    }
-
-    const user = await getUserById(userId);
-
-    if (!user) {
-      return response.status(404).json({ message: 'User doesn\'t exist' });
-    }
-    
-    const updatedUser = await updateUser({ id: userId, username, age, hobbies });
-
-    return response.status(200).json(updatedUser);
-  } catch (error) {
-    return response.status(500).json({ message: 'Server Error' });
+  if (!id || !uuidValidate(id)) {
+    return passJson(response, 400, { message: 'Invalid userId' });
   }
-});
-    
+
+  const user = getUserById(id);
+
+  if (!user) {
+    return passJson(response, 404, { message: 'User doesn\'t exist' });
+  }
+
+  let body = '';
+  request.on('data', chunk => (body += chunk));
+  request.on('end', async () => {
+    try {
+      const { username, age, hobbies } = JSON.parse(body);
+
+      if (!username || typeof age !== 'number' || !Array.isArray(hobbies)) {
+        return passJson(response, 400, { message: 'Missing or invalid required fields: username: string, age: number, hobbies: string[]' });
+      }
+
+      const updatedUser = await updateUser({ id, username, age, hobbies });
+
+      passJson(response, 200, updatedUser);
+    } catch {
+      passJson(response, 500, { message: 'Server Error' });
+    }
+  });
+
+  return;
+}
