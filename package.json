@@ -1,0 +1,29 @@
+{
+  "name": "simple-crud-api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon --watch src --ext ts,js,json --exec \"node --loader ts-node/esm src/index.ts\"",
+    "build": "tsc",
+    "start:prod": "npm run build && node dist/index.js",
+    "test": "jest --detectOpenHandles",
+    "test:exit": "jest --detectOpenHandles --forceExit"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.0",
+    "@types/uuid": "^10.0.0",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
+    "uuid": "^13.0.0"
+  }
+}
