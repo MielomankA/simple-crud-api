@@ -1,12 +1,6 @@
-import { Router } from 'express';
-import { getRouter } from './get.js';
-import { postRouter } from './post.js';
-import { putRouter } from './put.js';
-import { deleteRouter } from './delete.js';
+import { getReq, getReqById } from './get.js';
+import { postReq } from './post.js';
+import { putReq } from './put.js';
+import { deleteReq } from './delete.js';
 
-export const usersRouter = Router();
-
-usersRouter.use(getRouter);
-usersRouter.use(postRouter);
-usersRouter.use(putRouter);
-usersRouter.use(deleteRouter);
+export { getReq, postReq, putReq, deleteReq, getReqById };
