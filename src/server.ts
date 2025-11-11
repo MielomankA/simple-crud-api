@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { getReq, postReq, putReq, deleteReq, getReqById } from "./routes/index.js";
+import { passJson } from "./utils/passJson.js";
 
 const baseUrl = '/api/users';
 
@@ -28,4 +29,6 @@ export const server = http.createServer(async (req, res) => {
     if (method === 'DELETE' && url.startsWith(`${baseUrl}/`)) {
         deleteReq(res, url);
     }
+
+    passJson(res, 404, { message: 'Endpoint not found' });
 });
