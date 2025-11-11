@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { User } from '../types/types.js';
 
 const users: User[] = [];
@@ -16,18 +15,8 @@ export const getUserById = async (id: string): Promise<User | null> => {
   );
 };
 
-export const createUser = async (user: Omit<User, 'id'>): Promise<User> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newUser = {
-        ...user,
-        id: uuidv4(),
-      }
-
-      users.push(newUser);
-      resolve(newUser);
-    }, 20);
-  });
+export const createUser = (user: User): void => {
+    users.push(user);
 };
 
 export const updateUser = async ({ id, username, age, hobbies }: User): Promise<User | null> => {
