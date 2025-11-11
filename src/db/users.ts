@@ -3,10 +3,8 @@ import { User } from '../types/types.js';
 
 const users: User[] = [];
 
-export const getAllUsers = async (): Promise<User[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(users), 50);
-  });
+export const getAllUsers = (): User[] => {
+  return users;
 };
 
 export const getUserById = async (id: string): Promise<User | null> => {

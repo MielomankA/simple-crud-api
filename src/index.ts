@@ -1,18 +1,7 @@
-import express from 'express';
-import { usersRouter } from './routes/index.js';
+import { server } from './server.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-app.use('/api/users', usersRouter);
-app.use((request, response) => {
-  response.status(404).json({ message: `Endpoint ${request.originalUrl} not found` });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
